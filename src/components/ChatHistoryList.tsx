@@ -7,6 +7,9 @@ interface User {
   email: string;
   name: string;
   photoURL?: string;
+  role: string;
+  socketId: string;
+  status: 'online' | 'away' | 'busy';
 }
 
 interface Message {
@@ -42,7 +45,14 @@ const ChatHistoryList: React.FC<ChatHistoryListProps> = ({ messages, users, sele
     return Object.keys(messages)
       .filter(email => messages[email] && messages[email].length > 0)
       .map(email => {
-        const user = users.find(u => u.email === email) || { email, name: email.split('@')[0] };
+        const user = users.find(u => u.email === email) || { 
+          email, 
+          name: email.split('@')[0],
+          photoURL: undefined,
+          role: 'user',
+          socketId: '',
+          status: 'offline' as const
+        };
         const lastMessage = messages[email][messages[email].length - 1];
         return { user, lastMessage, email };
       })
@@ -55,7 +65,6 @@ const ChatHistoryList: React.FC<ChatHistoryListProps> = ({ messages, users, sele
         <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
           Recent Chats
         </h4>
-
         <div className="space-y-2">
           {getChatList().length === 0 ? (
             <div className="text-center py-8">

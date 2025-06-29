@@ -13,7 +13,7 @@ export default function ChatPage() {
   const [messageInput, setMessageInput] = useState('');
   const [userStatus, setUserStatus] = useState<'online' | 'away' | 'busy'>('online');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const router = useRouter();
 
   const { user, loading, signOut } = useAuth();
@@ -200,11 +200,10 @@ export default function ChatPage() {
               <div className="flex items-center space-x-3">
                 <div className="relative">
                   <Avatar 
-                    src={undefined} // Selected user doesn't have photoURL in this context
+                    src={selectedUserData?.photoURL}
                     alt={selectedUserData?.name || 'User'}
                     name={selectedUserData?.name || 'User'}
                     size="md"
-                    className="bg-gradient-to-r from-blue-500 to-teal-500 rounded-full"
                   />
                   <div className={`absolute -bottom-1 -right-1 h-4 w-4 ${getStatusColor(selectedUserData?.status || 'offline')} rounded-full border-2 border-white`}></div>
                 </div>
