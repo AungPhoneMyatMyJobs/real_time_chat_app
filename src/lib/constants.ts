@@ -119,31 +119,3 @@ export const RATE_LIMITS = {
   LOGIN_ATTEMPTS: 5,
   API_REQUESTS_PER_MINUTE: 100,
 } as const;
-
-// Mockup Data (for development)
-export const MOCKUP_USERS = [
-  {
-    email: 'admin@example.com',
-    password: 'admin123',
-    name: 'Admin User',
-    role: 'admin' as const,
-  },
-  {
-    email: 'john.doe@example.com',
-    password: 'john123',
-    name: 'John Doe',
-    role: 'user' as const,
-  },
-  {
-    email: 'jane.smith@example.com',
-    password: 'jane123',
-    name: 'Jane Smith',
-    role: 'user' as const,
-  },
-  {
-    email: 'demo@example.com',
-    password: 'demo123',
-    name: 'Demo User',
-    role: 'user' as const,
-  },
-] as const;

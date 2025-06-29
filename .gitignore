@@ -1,4 +1,6 @@
 .env.local
 .env.example
+.next
+node_modules
 # Firebase service account key
 real-time-chat-app-danero-firebase-adminsdk-fbsvc-68d76cd0c8.json

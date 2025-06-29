@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 
 interface AvatarProps {
   src?: string;
@@ -15,12 +14,6 @@ const sizeClasses = {
   sm: 'h-8 w-8 text-sm',
   md: 'h-10 w-10 text-base',
   lg: 'h-12 w-12 text-lg'
-};
-
-const sizePixels = {
-  sm: 32,
-  md: 40,
-  lg: 48
 };
 
 export default function Avatar({ src, alt, name, size = 'md', className = '' }: AvatarProps) {

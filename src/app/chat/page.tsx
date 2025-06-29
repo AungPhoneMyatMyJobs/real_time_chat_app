@@ -8,27 +8,12 @@ import Avatar from '@/components/Avatar';
 import ChatHistoryList from '@/components/ChatHistoryList';
 import OnlineUsers from '@/components/OnlineUsers';
 
-interface User {
-  email: string;
-  name: string;
-  role: string;
-  socketId: string;
-  status: 'online' | 'away' | 'busy';
-}
-
-interface Message {
-  senderId: string;
-  senderName: string;
-  message: string;
-  timestamp: string;
-}
-
 export default function ChatPage() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [messageInput, setMessageInput] = useState('');
   const [userStatus, setUserStatus] = useState<'online' | 'away' | 'busy'>('online');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const typingTimeoutRef = useRef<NodeJS.Timeout>();
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
 
   const { user, loading, signOut } = useAuth();

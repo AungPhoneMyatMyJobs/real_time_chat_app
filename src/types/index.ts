@@ -5,7 +5,7 @@ export interface User {
   name: string;
   username?: string;
   role: 'admin' | 'user' | 'moderator';
-  avatar?: string;
+  photoURL?: string;
   status: 'online' | 'away' | 'busy' | 'offline';
   lastSeen?: Date;
   socketId?: string;

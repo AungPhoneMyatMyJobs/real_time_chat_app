@@ -6,7 +6,6 @@ import {
   onAuthStateChanged, 
   signInWithPopup, 
   signOut as firebaseSignOut,
-  GoogleAuthProvider 
 } from 'firebase/auth';
 import { auth, googleProvider } from '@/lib/firebase';
 
