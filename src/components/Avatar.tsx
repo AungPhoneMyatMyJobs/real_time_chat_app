@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface AvatarProps {
   src?: string;
@@ -51,19 +52,21 @@ export default function Avatar({ src, alt, name, size = 'md', className = '' }: 
 
   return (
     <div className={`relative ${sizeClasses[size]} ${className}`}>
-      {!showFallback && (
+      {!showFallback && imageSrc && (
         <>
           {imageLoading && (
             <div className={`${sizeClasses[size]} bg-gray-200 rounded-full animate-pulse flex items-center justify-center`}>
               <div className="text-gray-400 text-xs">...</div>
             </div>
           )}
-          <img
+          <Image
             src={imageSrc}
             alt={alt}
             className={`${sizeClasses[size]} rounded-full object-cover ${imageLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-200`}
             onError={handleImageError}
             onLoad={handleImageLoad}
+            width={parseInt(sizeClasses[size].split(' ')[0].split('-')[1]) * 4}
+            height={parseInt(sizeClasses[size].split(' ')[0].split('-')[1]) * 4}
           />
         </>
       )}

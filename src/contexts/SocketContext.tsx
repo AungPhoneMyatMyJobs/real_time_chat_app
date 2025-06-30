@@ -168,7 +168,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     return () => {
       socketInstance.disconnect();
     };
-  }, [user]);
+  }, [user, socket]);
 
   const sendPrivateMessage = (recipientId: string, message: string) => {
     if (socket && user) {
