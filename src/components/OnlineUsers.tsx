@@ -2,15 +2,7 @@
 
 import React from 'react';
 import Avatar from '@/components/Avatar';
-
-interface User {
-  email: string;
-  name: string;
-  photoURL?: string;
-  role: string;
-  socketId: string;
-  status: 'online' | 'away' | 'busy';
-}
+import { User } from '@/types/chat';
 
 interface OnlineUsersProps {
   users: User[];

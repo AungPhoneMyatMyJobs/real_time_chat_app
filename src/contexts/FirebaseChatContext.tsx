@@ -2,35 +2,19 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useFirebaseChat } from '@/hooks/useFirebaseChat';
-
-interface User {
-  email: string;
-  name: string;
-  photoURL?: string;
-  role: string;
-  status: 'online' | 'away' | 'busy';
-  lastSeen: number;
-}
-
-interface Message {
-  senderId: string;
-  senderName: string;
-  message: string;
-  timestamp: number;
-  isRead?: boolean;
-}
+import { User, Message, TypingIndicator, UnreadCounts } from '@/types/chat';
 
 interface FirebaseChatContextType {
   connectedUsers: User[];
   messages: { [key: string]: Message[] };
-  unreadCounts: { [key: string]: number };
+  unreadCounts: UnreadCounts;
   sendPrivateMessage: (recipientId: string, message: string) => void;
   startTyping: (recipientId: string) => void;
   stopTyping: (recipientId: string) => void;
   changeStatus: (status: 'online' | 'away' | 'busy') => void;
   markMessagesAsRead: (userId: string) => void;
   isConnected: boolean;
-  typingUsers: { [key: string]: string };
+  typingUsers: TypingIndicator;
   listenToChat: (otherUserEmail: string) => void;
   activeChats: Set<string>;
 }

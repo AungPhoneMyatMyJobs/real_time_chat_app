@@ -103,7 +103,7 @@ export default function ChatPage() {
     }
   };
 
-  const formatTime = (timestamp: string) => {
+  const formatTime = (timestamp: number | string) => {
     return new Date(timestamp).toLocaleTimeString([], { 
       hour: '2-digit', 
       minute: '2-digit' 
@@ -272,8 +272,8 @@ export default function ChatPage() {
                   type="text"
                   value={messageInput}
                   onChange={handleInputChange}
-                  placeholder={`Message ${selectedUserData?.name}...`}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder={`Message to ${selectedUserData?.name}...`}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-black"
                 />
                 <button
                   type="submit"

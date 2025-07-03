@@ -2,34 +2,19 @@
 
 import React from 'react';
 import Avatar from '@/components/Avatar';
-
-interface User {
-  email: string;
-  name: string;
-  photoURL?: string;
-  role: string;
-  socketId: string;
-  status: 'online' | 'away' | 'busy';
-}
-
-interface Message {
-  senderId: string;
-  senderName: string;
-  message: string;
-  timestamp: string;
-}
+import { User, Message, UnreadCounts } from '@/types/chat';
 
 interface ChatHistoryListProps {
   messages: { [key: string]: Message[] };
   users: User[];
   selectedUser: string | null;
   onSelectUser: (email: string) => void;
-  unreadCounts: { [key: string]: number };
+  unreadCounts: UnreadCounts;
   currentUserEmail: string;
 }
 
 const ChatHistoryList: React.FC<ChatHistoryListProps> = ({ messages, users, selectedUser, onSelectUser, unreadCounts, currentUserEmail }) => {
-  const formatTime = (timestamp: string) => {
+  const formatTime = (timestamp: number | string) => {
     const date = new Date(timestamp);
     const now = new Date();
     const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
@@ -56,7 +41,11 @@ const ChatHistoryList: React.FC<ChatHistoryListProps> = ({ messages, users, sele
         const lastMessage = messages[email][messages[email].length - 1];
         return { user, lastMessage, email };
       })
-      .sort((a, b) => new Date(b.lastMessage.timestamp).getTime() - new Date(a.lastMessage.timestamp).getTime());
+      .sort((a, b) => {
+          const timestampA = typeof a.lastMessage.timestamp === 'string' ? new Date(a.lastMessage.timestamp).getTime() : a.lastMessage.timestamp;
+          const timestampB = typeof b.lastMessage.timestamp === 'string' ? new Date(b.lastMessage.timestamp).getTime() : b.lastMessage.timestamp;
+          return timestampB - timestampA;
+        });
   };
 
   return (

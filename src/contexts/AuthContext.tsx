@@ -8,23 +8,7 @@ import {
   signOut as firebaseSignOut,
 } from 'firebase/auth';
 import { auth, googleProvider } from '@/lib/firebase';
-
-interface User {
-  uid: string;
-  email: string;
-  name: string;
-  photoURL?: string;
-  role: string;
-  socketId?: string;
-  status: 'online' | 'away' | 'busy';
-}
-
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  signInWithGoogle: () => Promise<void>;
-  signOut: () => Promise<void>;
-}
+import { User, AuthContextType } from '@/types/chat';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

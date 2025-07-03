@@ -7,34 +7,17 @@ import {
   onValue, 
   off, 
   set, 
-  remove,
-  serverTimestamp
+  remove
 } from 'firebase/database';
 import { database } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
-
-interface User {
-  email: string;
-  name: string;
-  photoURL?: string;
-  role: string;
-  status: 'online' | 'away' | 'busy';
-  lastSeen: number;
-}
-
-interface Message {
-  senderId: string;
-  senderName: string;
-  message: string;
-  timestamp: number;
-  isRead?: boolean;
-}
+import { User, Message, TypingIndicator, UnreadCounts } from '@/types/chat';
 
 export const useFirebaseChat = () => {
   const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
   const [messages, setMessages] = useState<{ [key: string]: Message[] }>({});
-  const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>({});
-  const [typingUsers, setTypingUsers] = useState<{ [key: string]: string }>({});
+  const [unreadCounts, setUnreadCounts] = useState<UnreadCounts>({});
+  const [typingUsers, setTypingUsers] = useState<TypingIndicator>({});
   const [isConnected, setIsConnected] = useState(false);
   
   const { user } = useAuth();
@@ -128,7 +111,7 @@ export const useFirebaseChat = () => {
     // Cleanup function
     return () => {
       console.log('🧹 Cleaning up user listener');
-      off(usersRef);
+      off(usersRef, 'value', unsubscribe);
       setUserOffline();
     };
   }, [user, setUserOnline, setUserOffline]);
@@ -146,7 +129,11 @@ export const useFirebaseChat = () => {
       const messagesData = snapshot.val();
       if (messagesData) {
         const messagesList = Object.values(messagesData) as Message[];
-        const sortedMessages = messagesList.sort((a, b) => a.timestamp - b.timestamp);
+        const sortedMessages = messagesList.sort((a, b) => {
+          const timestampA = typeof a.timestamp === 'string' ? new Date(a.timestamp).getTime() : a.timestamp;
+          const timestampB = typeof b.timestamp === 'string' ? new Date(b.timestamp).getTime() : b.timestamp;
+          return timestampA - timestampB;
+        });
         console.log('📝 Sorted messages:', sortedMessages);
         
         setMessages(prev => ({
@@ -174,7 +161,7 @@ export const useFirebaseChat = () => {
       console.error('❌ Error listening to chat:', error);
     });
 
-    return unsubscribe;
+    return () => off(messagesRef, 'value', unsubscribe);
   }, [user, getChatRoomKey]);
 
   // Send private message
@@ -254,7 +241,7 @@ export const useFirebaseChat = () => {
       }
     });
 
-    return unsubscribe;
+    return () => off(typingRef, 'value', unsubscribe);
   }, [user, getChatRoomKey, createEmailKey]);
 
   // Change user status
