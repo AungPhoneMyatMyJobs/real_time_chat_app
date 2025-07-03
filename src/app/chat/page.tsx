@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { useSocket } from '@/contexts/SocketContext';
+import { useFirebaseChatContext } from '@/contexts/FirebaseChatContext';
 import Avatar from '@/components/Avatar';
 import ChatHistoryList from '@/components/ChatHistoryList';
 import OnlineUsers from '@/components/OnlineUsers';
@@ -28,7 +28,8 @@ export default function ChatPage() {
     markMessagesAsRead,
     isConnected,
     typingUsers,
-  } = useSocket();
+    listenToChat,
+  } = useFirebaseChatContext();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -78,6 +79,8 @@ export default function ChatPage() {
 
   const handleUserSelect = (userEmail: string) => {
     setSelectedUser(userEmail);
+    // Start listening to this chat
+    listenToChat(userEmail);
     // Mark messages as read when user selects a chat
     markMessagesAsRead(userEmail);
   };

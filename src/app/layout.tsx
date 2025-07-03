@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { SocketProvider } from "@/contexts/SocketContext";
+import { FirebaseChatProvider } from "@/contexts/FirebaseChatContext";
 
 export const metadata: Metadata = {
   title: "Real-Time Chat App",
@@ -14,10 +14,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
-      <SocketProvider>
-        {children}
-      </SocketProvider>
-    </AuthProvider>
+    <html lang="en">
+      <body>
+        <AuthProvider>
+          <FirebaseChatProvider>
+            {children}
+          </FirebaseChatProvider>
+        </AuthProvider>
+      </body>
+    </html>
   );
 }

@@ -7,15 +7,21 @@ const app = express();
 const httpServer = createServer(app);
 
 // Configure CORS for Express
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001", 
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || ["http://localhost:3000", "https://your-app.vercel.app"],
+  origin: allowedOrigins,
   credentials: true
 }));
 
 // Configure Socket.IO with CORS
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.FRONTEND_URL || ["http://localhost:3000", "https://your-app.vercel.app"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true
   }
